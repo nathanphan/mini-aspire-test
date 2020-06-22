@@ -31,7 +31,8 @@ class ApplyLoanTest extends TestCase
 
         $application = factory(LoanApplication::class)->raw();
 
-        $this->post('/applications', $application)->assertRedirect('/login');
+        $this->post('/applications', $application)
+            ->assertRedirect('/login');
     }
 
     /** @test */
@@ -46,7 +47,7 @@ class ApplyLoanTest extends TestCase
     /** @test */
     public function authenticated_customer_can_apply_loan_application()
     {
-        $this->withoutExceptionHandling();
+        //$this->withoutExceptionHandling();
 
         $this->signIn();
 

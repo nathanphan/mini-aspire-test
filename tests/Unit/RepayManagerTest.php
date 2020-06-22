@@ -23,7 +23,7 @@ class RepayManagerTest extends TestCase
 
         $repayManager->pay($loanApplication);
 
-        $this->assertEquals($loanApplication->getWeeklyRepayAmount(), $repayManager->getTotalRepay());
+        $this->assertEquals(round($loanApplication->getWeeklyRepayAmount()), $repayManager->getTotalRepay());
     }
 
     /** @test */
