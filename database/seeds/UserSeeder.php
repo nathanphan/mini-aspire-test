@@ -11,8 +11,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\User::class)->create([
-                'email' => 'borrower1@mini-aspire.com',
+        factory(\App\User::class, 2)->create([
                 'password' => \Illuminate\Support\Facades\Hash::make('password')
             ]);
     }
