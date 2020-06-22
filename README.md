@@ -1,4 +1,12 @@
-## Mini Aspire
+# Mini Aspire
+This is a project to demonstrate my ability to work with Laravel.
+
+In this project **for the purpose of demonstration**, I made some assumptions like:
+> Term of loan will be in weeks, and Amount to loan is in US dollar.
+>
+> There will be no interest added when customer repay (Happy)
+>
+> The amount of repayment is based on divison of Amount/Term (This should be different in real life) 
 
 ### Installation 
 
@@ -9,6 +17,8 @@ https://laravel.com/docs/7.x/valet#installation
 - composer install
 - php artisan key:generate
 - php artisan migrate:fresh --seed **(change database connection in .env first)**
+- php artisan ui vue --auth
+- npm install && npm run development
 
 
 ### User Stories
