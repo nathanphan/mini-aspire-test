@@ -12,7 +12,10 @@ class LoanApplication extends Model
     const STATUS_DONE = 'done';
 
     protected $table = 'loan_applications';
-    protected $guarded = [];
+    protected $guarded = [
+        'borrower_id',
+        'status'
+    ];
 
     protected $attributes = [
         'status' => self::STATUS_NEW

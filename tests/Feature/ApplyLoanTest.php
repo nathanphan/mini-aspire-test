@@ -47,7 +47,7 @@ class ApplyLoanTest extends TestCase
     /** @test */
     public function authenticated_customer_can_apply_loan_application()
     {
-        //$this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $this->signIn();
 

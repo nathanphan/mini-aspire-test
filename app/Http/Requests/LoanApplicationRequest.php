@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class LoanApplicationRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class LoanApplicationRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return auth()->check();
     }
 
     /**
@@ -27,7 +28,23 @@ class LoanApplicationRequest extends FormRequest
             'email' => 'required|email',
             'term' => 'required|numeric|min:1',
             'amount' => 'required|numeric|min:100', // Assume that minimum loan amount must equal or greater than 100 dollars
-            'dob' => 'nullable|date:Y-m-d'
+            'dob' => 'nullable|date:Y-m-d',
+            'first_name' => 'nullable|string',
+            'last_name' => 'nullable|string',
+            'monthly_income' => 'numeric',
+            'phone' => 'required',
+            'note' => 'nullable',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'email.required' => 'Email is required!',
+            'term.required' => 'Term is required!',
+            'phone.required' => 'Phone number is required!',
+            'amount.required' => 'Amount is required!',
+            'amount.min' => 'Amount must be at least 100 USD',
         ];
     }
 }
