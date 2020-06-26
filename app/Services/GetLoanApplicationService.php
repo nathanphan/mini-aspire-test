@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App\RepayHistory;
 use App\User;
 
 class GetLoanApplicationService
@@ -15,7 +16,8 @@ class GetLoanApplicationService
      */
     public function all(User $user, $filter = []) {
         return $user->applications()
-            ->with('history')
-            ->get();
+            ->getQuery()
+            ->withLastRepayAt()
+            ->paginate();
     }
 }

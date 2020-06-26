@@ -34,9 +34,7 @@
                             <td>{{ $application->term  }} weeks</td>
                             <td>{{ $application->amount }} $</td>
                             <td>
-                                {{ $application->history->sortByDesc('created_at')->first() ?
-                                   $application->history->sortByDesc('created_at')->first()->created_at->diffForHumans() :
-                                   'No paid yet'  }}
+                                {{ $application->last_repay_at ? $application->last_repay_at->diffForHumans() : 'No paid yet'  }}
                             </td>
                             <td>
                                 <span class="badge badge-{{ $application->getStatusBadges() }}">
