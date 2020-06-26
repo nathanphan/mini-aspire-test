@@ -4,31 +4,33 @@ namespace App\Http\Controllers;
 
 use App\LoanApplication;
 use App\Payment\RepayFailedException;
-use App\Payment\RepayManagerInterface;
+use App\Policies\LoanApplicationPolicy;
+use App\Services\RepayLoanService;
 use http\Env\Response;
 use Illuminate\Http\Request;
 
 class RepayLoanController extends Controller
 {
-    private $repayManager;
+    private $repayLoanService;
 
-    public function __construct(RepayManagerInterface $rePayManager)
+    public function __construct(RepayLoanService $repayLoanService)
     {
-        $this->repayManager = $rePayManager;
+        $this->repayLoanService = $repayLoanService;
     }
 
     public function repay(LoanApplication $application)
     {
-        if(auth()->user()->isNot($application->borrower)) {
-            abort(403);
-        }
+       $this->authorize(LoanApplicationPolicy::POLICY_MANAGE_LOAN, $application);
 
         try {
-            $this->repayManager->pay($application);
-            return response()->redirectTo('/applications');
+            $this->repayLoanService->repay($application);
+            return response()->redirectTo($application->path());
         }
         catch (RepayFailedException $repayFailedException) {
-            return response()->json([], 422);
+            return response()->json(['message' => $repayFailedException->getMessage()], 422);
+        }
+        catch (\Exception $ex) {
+            return response()->json(['message' => $ex->getMessage()], 422);
         }
     }
 }

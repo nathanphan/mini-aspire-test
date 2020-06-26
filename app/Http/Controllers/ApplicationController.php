@@ -41,7 +41,7 @@ class ApplicationController extends Controller
 
     public function index()
     {
-        $applications = $this->getLoanApplicationService->all(auth()->user());
+        $applications = $this->getLoanApplicationService->all();
         return view('application.index', compact('applications'));
     }
 

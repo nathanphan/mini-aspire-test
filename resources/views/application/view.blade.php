@@ -18,8 +18,8 @@
                                         <li class="nav-item">
                                             <a class="nav-link active" id="basicInfo-tab" data-toggle="tab"
                                                href="#basicInfo"
-                                               role="tab" aria-controls="basicInfo" aria-selected="true">Application {{ $application->id }}
-                                                Information</a>
+                                               role="tab" aria-controls="basicInfo" aria-selected="true">Loan Application {{ $application->id }}
+                                                Details</a>
                                         </li>
                                     </ul>
                                     <div class="tab-content ml-1" id="myTabContent">

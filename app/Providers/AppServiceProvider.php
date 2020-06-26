@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Payment\RepayManager;
-use App\Payment\RepayManagerInterface;
+use App\Observers\RepayHistoryObserver;
+use App\RepayHistory;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,6 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->instance(RepayManagerInterface::class, new RepayManager());
+        RepayHistory::observe(RepayHistoryObserver::class);
     }
 }

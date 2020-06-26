@@ -3,8 +3,6 @@
 namespace Tests\Feature;
 
 use App\LoanApplication;
-use App\Payment\RepayManager;
-use App\Payment\RepayManagerInterface;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -17,8 +15,6 @@ class RepayLoanTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $repayManager = new RepayManager();
-        $this->app->instance(RepayManagerInterface::class, $repayManager);
     }
 
     /** @test */
@@ -44,7 +40,7 @@ class RepayLoanTest extends TestCase
             ]);
 
         $this->post($loanApplication->path() . '/repay', [])
-            ->assertRedirect('/applications');
+            ->assertRedirect($loanApplication->path());
 
         $repayHistory = $loanApplication->history()->first();
         $this->assertNotNull($repayHistory);

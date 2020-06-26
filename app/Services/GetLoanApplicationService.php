@@ -14,10 +14,14 @@ class GetLoanApplicationService
      * @param array $filter This is for search or filter later on.
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function all(User $user, $filter = []) {
+    public function all(User $user = null, $filter = []) {
+        if (!$user) {
+            $user = auth()->user();
+        }
+
         return $user->applications()
-            ->getQuery()
-            ->withLastRepayAt()
-            ->paginate();
+                    ->getQuery()
+                    ->withLastRepayAt()
+                    ->paginate();
     }
 }

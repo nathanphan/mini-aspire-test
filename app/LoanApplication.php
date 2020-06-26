@@ -74,7 +74,8 @@ class LoanApplication extends Model
     public function getRemainingAmount()
     {
         $totalRePaid = $this->history()->get()->sum('amount');
-        return round(abs($this->amount - $totalRePaid));
+        //return round(abs($this->amount - $totalRePaid));
+        return abs($this->amount - $totalRePaid);
     }
 
     public function scopeWithLastRepayAt($query)
@@ -84,5 +85,10 @@ class LoanApplication extends Model
             ->latest()
             ->take(1)
         ])->withCasts(['last_repay_at' => 'datetime']);
+    }
+
+    public function getTotalRepaid()
+    {
+        return abs($this->amount - $this->getRemainingAmount());
     }
 }
