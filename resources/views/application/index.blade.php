@@ -12,118 +12,40 @@
         <hr>
         <div class="row">
             <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        @foreach ($applications as $application)
-                            <div class="row">
-                                <div class="col-12">
-                                    <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
-                                        <li class="nav-item">
-                                            <a class="nav-link active" id="basicInfo-tab" data-toggle="tab"
-                                               href="#basicInfo"
-                                               role="tab" aria-controls="basicInfo" aria-selected="true">Application {{ $application->id }}
-                                                Information</a>
-                                        </li>
-                                    </ul>
-                                    <div class="tab-content ml-1" id="myTabContent">
-                                        <div class="tab-pane fade show active" id="basicInfo" role="tabpanel"
-                                             aria-labelledby="basicInfo-tab">
-
-
-                                            <div class="row">
-                                                <div class="col-sm-2 col-md-2 col-4">
-                                                    <label style="font-weight:bold;">Term (in Weeks)</label>
-                                                </div>
-                                                <div class="col-md-7 col-5">
-                                                    {{ $application->term }} weeks
-                                                </div>
-                                                @if($application->status == \App\LoanApplication::STATUS_APPROVED)
-                                                    <div class="col-md-1 col-1">
-                                                        <form method="POST" action="{{ $application->repayPath() }}">
-                                                            @csrf
-                                                            <button type="submit" class="btn btn-success">Repay
-                                                                <span class="badge badge-light">{{ $application->getWeeklyRepayAmount() }} USD</span>
-                                                            </button>
-                                                        </form>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                            <hr/>
-                                            <div class="row">
-                                                <div class="col-sm-3 col-md-2 col-5">
-                                                    <label style="font-weight:bold;">Loan Amount</label>
-                                                </div>
-                                                <div class="col-md-8 col-6">
-                                                    {{ $application->amount }} $
-                                                </div>
-                                            </div>
-                                            <hr/>
-                                            <div class="row">
-                                                <div class="col-sm-3 col-md-2 col-5">
-                                                    <label style="font-weight:bold;">Applicant Name</label>
-                                                </div>
-                                                <div class="col-md-8 col-6">
-                                                    {{ $application->first_name . ' ' . $application->last_name }}
-                                                </div>
-                                            </div>
-                                            <hr/>
-
-                                            <div class="row">
-                                                <div class="col-sm-3 col-md-2 col-5">
-                                                    <label style="font-weight:bold;">Email</label>
-                                                </div>
-                                                <div class="col-md-8 col-6">
-                                                    {{ $application->email }}
-                                                </div>
-                                            </div>
-                                            <hr/>
-
-                                            <div class="row">
-                                                <div class="col-sm-3 col-md-2 col-5">
-                                                    <label style="font-weight:bold;">Date of Birth</label>
-                                                </div>
-                                                <div class="col-md-8 col-6">
-                                                    {{ $application->dob }}
-                                                </div>
-                                            </div>
-                                            <hr/>
-
-                                            <div class="row">
-                                                <div class="col-sm-3 col-md-2 col-5">
-                                                    <label style="font-weight:bold;">Status</label>
-                                                </div>
-                                                <div class="col-md-8 col-6">
-                                                    <span class="badge badge-{{ $application->getStatusBadges() }}">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Term (in weeks)</th>
+                        <th scope="col">Loan Amount</th>
+                        <th scope="col">Last Repayment</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Created</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($applications as $application)
+                        <tr>
+                            <th scope="row">{{ ++$loop->index }}</th>
+                            <td>{{ $application->email }}
+                            </td>
+                            <td>{{ $application->term  }} weeks</td>
+                            <td>{{ $application->amount }} $</td>
+                            <td>
+                                {{ $application->last_repay_at ? $application->last_repay_at->diffForHumans() : 'No paid yet'  }}
+                            </td>
+                            <td>
+                                <span class="badge badge-{{ $application->getStatusBadges() }}">
                                                         {{ $application->status }}</span>
-
-                                                    <span class="badge badge-info">
-                                                        Remaining Amount: {{ $application->getRemainingAmount() }}</span>
-
-                                                </div>
-                                            </div>
-                                            <hr/>
-
-                                            <div class="row">
-                                                <div class="col-sm-3 col-md-2 col-5">
-                                                    <label style="font-weight:bold;">Note</label>
-                                                </div>
-                                                <div class="col-md-8 col-6">
-                                                    {{ $application->note }}
-                                                </div>
-                                            </div>
-                                            <hr/>
-
-
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-
-                    </div>
-
-                </div>
+                            </td>
+                            <td>{{ $application->created_at }}</td>
+                            <td><a href="{{ $application->path() }}" class="btn btn-secondary">View</a></td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

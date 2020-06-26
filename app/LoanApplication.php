@@ -12,7 +12,10 @@ class LoanApplication extends Model
     const STATUS_DONE = 'done';
 
     protected $table = 'loan_applications';
-    protected $guarded = [];
+    protected $guarded = [
+        'borrower_id',
+        'status'
+    ];
 
     protected $attributes = [
         'status' => self::STATUS_NEW
@@ -71,6 +74,21 @@ class LoanApplication extends Model
     public function getRemainingAmount()
     {
         $totalRePaid = $this->history()->get()->sum('amount');
-        return round(abs($this->amount - $totalRePaid));
+        //return round(abs($this->amount - $totalRePaid));
+        return abs($this->amount - $totalRePaid);
+    }
+
+    public function scopeWithLastRepayAt($query)
+    {
+        $query->addSelect(['last_repay_at' => RepayHistory::select('created_at')
+            ->whereColumn('application_id', 'loan_applications.id')
+            ->latest()
+            ->take(1)
+        ])->withCasts(['last_repay_at' => 'datetime']);
+    }
+
+    public function getTotalRepaid()
+    {
+        return abs($this->amount - $this->getRemainingAmount());
     }
 }

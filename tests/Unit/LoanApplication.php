@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Services\RepayLoanService;
 use App\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -103,5 +104,20 @@ class LoanApplication extends TestCase
             ->create();
 
         $this->assertEquals($application->first_name . ' ' . $application->last_name, $application->fullName);
+    }
+
+    /** @test */
+    public function it_can_get_total_repaid()
+    {
+        $application = factory(\App\LoanApplication::class)
+            ->create([
+                'term' => '12', // default in weeks  as assumption
+                'amount' => 100, // in dollars as assumption
+            ]);
+        $repayService = new RepayLoanService();
+        $repayService->repay($application);
+
+        // the expected value is acceptable for now. This can be improved in real life.
+        $this->assertEquals(8.33, $application->getTotalRepaid());
     }
 }
